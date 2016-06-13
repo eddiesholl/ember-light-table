@@ -22,6 +22,9 @@
               table=table
               tableActions=tableActions
               sortIcons=sortIcons
+              mouseDown=(action 'onMouseDown' column)
+              mouseUp=(action 'onMouseUp' column)
+              mouseMove=(action 'onMouseMove' column)
               click=(action 'onColumnClick' column)
               doubleClick=(action 'onColumnDoubleClick' column)}}
           {{/each}}
