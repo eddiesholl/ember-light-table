@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import callAction from 'ember-light-table/utils/call-action';
-
+/* globals $ */
 const {
   computed
 } = Ember;
@@ -131,7 +131,6 @@ export default Ember.Mixin.create({
           this.set('dragStarted', true);
           const dragOriginal = $(event.currentTarget);
           const clientRect = event.currentTarget.getBoundingClientRect();
-          console.log('create zombie')
           dragSubject = dragOriginal.clone(false);
           dragSubject.css({
             position: 'absolute',
@@ -141,7 +140,6 @@ export default Ember.Mixin.create({
             userSelect: 'none'
           });
           dragSubject.insertAfter('.lt-head-wrap');
-          const startingLeft = clientRect.left;
           this.set('dragSubject', dragSubject);
         }
 
@@ -162,17 +160,36 @@ export default Ember.Mixin.create({
       }
     },
 
-    onMouseUp( /*column , event */ ) {
+    onMouseUp(column, event) {
       const dragSubject = this.get('dragSubject');
       if (dragSubject) {
+        const dragStartOffset = this.get('dragStartOffset');
+        const midline = event.pageX - dragStartOffset + (dragSubject.width() / 2);
+        const headTop = dragSubject.position().top;
         dragSubject.remove();
+        const nearestElement = document.elementFromPoint(midline, headTop);
+        const dropTargetLabel = nearestElement.getAttribute('data-label');
+        this.dragColumn(column, dropTargetLabel);
       }
       this.set('mouseDown', false);
       this.set('dragStarted', false);
       this.set('dragSubject', null);
       this.set('dragStartOffset', null);
-
-      console.log('onMouseUp');
     },
+
+    onMouseEnter(column) {
+      console.log('onMouseEnter ' + column.get('label'));
+    },
+    onDragEnd(column) {
+      console.log('onDragEnd ' + column.get('label'));
+    },
+    onDrop(column) {
+      console.log('onDrop ' + column.get('label'));
+    },
+
+  },
+
+  dragColumn: function(draggedColumn, targetColumnName) {
+    this.get('table').dragColumn(draggedColumn, targetColumnName);
   }
 });

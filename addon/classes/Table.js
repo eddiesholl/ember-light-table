@@ -9,10 +9,10 @@ const {
   A: emberArray
 } = Ember;
 
- /**
-  * @module Classes
-  * @class Table
-  */
+/**
+ * @module Classes
+ * @class Table
+ */
 export default class Table extends Ember.Object.extend({
   /**
    * @property columns
@@ -309,6 +309,18 @@ export default class Table extends Ember.Object.extend({
    */
   removeColumns(columns = []) {
     return this.columns.removeObjects(columns);
+  }
+
+  dragColumn(draggedColumn, toColumnName) {
+    const draggedIndex = this.columns.indexOf(draggedColumn);
+    const toIndex = this.columns.findIndex(c => {
+      return c.get('label') === toColumnName;
+    });
+
+    Ember.run.once(this, function() {
+      this.columns.removeAt(draggedIndex);
+      this.columns.insertAt(toIndex, draggedColumn);
+    });
   }
 
   /**
