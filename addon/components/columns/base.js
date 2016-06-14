@@ -14,9 +14,10 @@ const Column = Ember.Component.extend({
   layout,
   tagName: 'th',
   classNames: ['lt-column'],
-  attributeBindings: ['width', 'colspan', 'rowspan'],
+  attributeBindings: ['width', 'colspan', 'rowspan', 'data-label'],
   classNameBindings: ['align', 'isGroupColumn:lt-group-column', 'isHideable', 'isSortable', 'isSorted', 'column.classNames'],
 
+  'data-label': computed.readOnly('column.label'),
   width: computed.readOnly('column.width'),
   isGroupColumn: computed.readOnly('column.isGroupColumn'),
   isSortable: computed.readOnly('column.sortable'),
