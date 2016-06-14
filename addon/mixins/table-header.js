@@ -131,14 +131,29 @@ export default Ember.Mixin.create({
           this.set('dragStarted', true);
           const dragOriginal = $(event.currentTarget);
           const clientRect = event.currentTarget.getBoundingClientRect();
-          dragSubject = dragOriginal.clone(false);
-          dragSubject.css({
-            position: 'absolute',
-            left: clientRect.left,
-            width: clientRect.width,
-            opacity: 0.9,
-            userSelect: 'none'
-          });
+          const clone = dragOriginal.clone(false);
+          clone.css({ width: clientRect.width });
+
+          const tableBody = $(`#${this.get('tableId')} .lt-body`);
+
+          const shadedBelow = $('<div/>')
+            .css({
+              width: clientRect.width,
+              height: tableBody.height(),
+              backgroundColor: 'lightgrey'
+            });
+
+          dragSubject = $('<div/>')
+            .append(clone)
+            .append(shadedBelow)
+            .css({
+              position: 'absolute',
+              left: clientRect.left,
+              width: clientRect.width,
+              opacity: 0.9,
+              userSelect: 'none',
+              boxShadow: '5px 5px 5px #888888'
+            });
           dragSubject.insertAfter('.lt-head-wrap');
           this.set('dragSubject', dragSubject);
         }
