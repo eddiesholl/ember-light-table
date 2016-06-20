@@ -121,6 +121,11 @@ export default Ember.Mixin.create({
     },
 
     onMouseMove(column, event) {
+
+      if (!column.get('draggable')) {
+        return;
+      }
+
       if (this.get('mouseDown')) {
         const dragStarted = this.get('dragStarted');
         var dragSubject;
@@ -192,15 +197,15 @@ export default Ember.Mixin.create({
       this.set('dragStartOffset', null);
     },
 
-    onMouseEnter(column) {
-      console.log('onMouseEnter ' + column.get('label'));
-    },
-    onDragEnd(column) {
-      console.log('onDragEnd ' + column.get('label'));
-    },
-    onDrop(column) {
-      console.log('onDrop ' + column.get('label'));
-    },
+    /*    onMouseEnter(column) {
+          console.log('onMouseEnter ' + column.get('label'));
+        },
+        onDragEnd(column) {
+          console.log('onDragEnd ' + column.get('label'));
+        },
+        onDrop(column) {
+          console.log('onDrop ' + column.get('label'));
+        },*/
 
   },
 
